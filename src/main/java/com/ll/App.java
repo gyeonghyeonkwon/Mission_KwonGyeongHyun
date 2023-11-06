@@ -9,6 +9,7 @@ public class App {
     public void run() {
         Scanner scanner = new Scanner(System.in);
         System.out.println("==명언앱==");
+        int wiseSayingNumber =0;
         while (true) {
             System.out.print("명령 :");
             String sc = scanner.nextLine();
@@ -22,7 +23,11 @@ public class App {
 
                 System.out.print("작가 :");
                 String another = scanner.nextLine();
+                wiseSayingNumber++;
+                int id = wiseSayingNumber;
+                System.out.printf("%d번 명언이 등록되었습니다.%n" ,id);
             }
+
         }
     }
 }
