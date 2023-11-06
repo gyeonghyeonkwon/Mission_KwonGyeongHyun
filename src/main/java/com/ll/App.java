@@ -63,7 +63,7 @@ public class App {
 
                     }
                      if (inventory.id != id) { //목록에 저장된 값이 존재 하되 id값이 다르게 입력할때 동작.
-                        System.out.printf("%d번 명언을 찾을수없습니다",id);
+                        System.out.printf("%d번 명언을 찾을수없습니다%n",id);
                          break;
                     }
                 }
