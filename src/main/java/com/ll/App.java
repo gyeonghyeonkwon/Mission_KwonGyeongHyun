@@ -49,14 +49,18 @@ public class App {
                     if (ParamName.equals("id")) {
                         id = Integer.parseInt(ParamValue);
                     }
-                    System.out.printf("%d 번 명언이 삭제되었습니다%n", id);
                 }
                 for (int i = 0; i < inventoryList.size(); i++) { // 객체가 저장되어있는 리스트에 사이즈만큼 순회한다
                     Inventory inventory = inventoryList.get(i); // 리스트에 저장되어있는 값을 꺼내어 클래스의 객체에저장.
                     if (inventory.id == id) { // 현재 목록에 저장 되어 있는 id 와 현재 입력된 id 값이 같다고 한다면
                         inventoryList.remove(i); // 삭제한다.
+                        System.out.printf("%d 번 명언이 삭제되었습니다%n", id);
+                    }
+                    else {
+                        System.out.println(" 삭제 할수 있는 명언을 찾을수없습니다.");
                     }
                 }
+
             }
         }
     }
