@@ -10,44 +10,48 @@ public class App {
 
     public void run() {
         System.out.println("==명언앱==");
-        Rq rq = new Rq();
+
+
+
         while (true) {
+
             System.out.print("명령 :");
             String sc = scanner.nextLine();
 
-            if (sc.equals("종료")) {
-                System.out.println("프로그램을 종료합니다.");
+            Rq rq = new Rq(sc);
 
-                return; //반복문 종료
+            switch (rq.getAction()) { //rq 로 부터 반환 받은 문자열 으로 해당 문자열 을 찾음
 
-            } else if (sc.equals("등록")) {
+                case "종료" :
 
-                register();
-
-            } else if (sc.equals("목록")) {
-
-                list();
-
-            } else if (sc.startsWith("삭제?")) {
-
-                listRemove(sc);
-
-            }
-            else if (sc.startsWith("수정?")) {
-
-                listModify(sc);
-
+                    System.out.println("프로그램을 종료합니다.");
+                    return;
+                case "등록" :
+                    register();
+                    break;
+                case "목록" :
+                    list();
+                    break;
+                case "삭제" :
+                    listRemove(rq);
+                    break;
+                case "수정" :
+                    listModify(rq);
+                    break;
+                default:
+                    System.out.println("다시 입력 해주세요.");
             }
         }
     }
 
-    void register() {
+    private void register() {
 
         System.out.print("명언 :");
         String wiseSaying = scanner.nextLine();
 
         System.out.print("작가 :");
         String author = scanner.nextLine();
+
         wiseSayingNumber++; // 정수 증가
         int id = wiseSayingNumber; // 증가한 값 id 변수에 저장
         System.out.printf("%d번 명언이 등록되었습니다.%n", id);
@@ -56,7 +60,7 @@ public class App {
 
     }
 
-    void list() {
+    private void list() {
 
         System.out.println("번호 / 작가 / 명언");
         System.out.println("-".repeat(18));
@@ -67,48 +71,66 @@ public class App {
 
     }
 
-    void listRemove(String sc) {
+    private void listRemove(Rq rq) {
 
-        int id= getParamAsInt (sc , "id" ,0); //입력된 "id" 문자열 이 나 값이 오입력 이면 0을 반환.
+        int id= rq.getParamAsInt ("id" ,0); //입력된 "id" 문자열 이 나 값이 오입력 이면 0을 반환.
 
-        if (id ==0) { // id 값이 false 면 실행
+        if (id ==0) { // id 값이 0 이면 실행
             System.out.println("삭제할 id 를 찾을 수 없습니다.");
             return; //함수를 끝낸다.
         }
+        int index = getIndexSearchId(id); //결과 값을 반환 받음
 
+        if (index == -1) { // 아이디값을 찾을수 없을 경우 에 실행
+            System.out.printf("%d번 명언을 찾을수없습니다.%n",id);
+            return;
+        }
+
+
+        inventoryList.remove(index); //명언을 삭제한다.
+
+        System.out.printf("%d번 명언을 삭제 합니다.%n",id);
     }
 
-    void listModify(String sc) {
+    private int getIndexSearchId(int id) {   // 목록에 저장되어있는 만큼 순회 하면서 아이디 값을찾아 삭제한다
+        for (int i=0; i < inventoryList.size(); i++) {
+            Inventory inventory = inventoryList.get(i);
 
-        int id= getParamAsInt (sc , "id" ,0); //입력된 "id" 문자열 이 나 값이 오입력 이면 0을 반환.
+            if (inventory.id == id) { //목록에 저장 되어있는 아이디값 과 sc 에 입력한 아이디 값과 같을 경우 실행
+                return i;
+            }
+        }
+        return -1; //목록에 아이디 값을 찾을 수 없을 경우
+    }
 
-        if (id ==0) { // id 값이 false 면 실행
+    private void listModify(Rq rq) {
+
+        int id= rq.getParamAsInt ("id" ,0); //입력된 "id" 문자열 이 나 값이 오입력 이면 0을 반환.
+
+        if (id ==0) { // id 값이 0이 면 실행
             System.out.println("수정할 id 를 찾을 수 없습니다.");
             return; //함수를 끝낸다.
         }
+        int index = getIndexSearchId(id); //결과 값을 반환 받음
 
+        if (index == -1) { // 아이디값을 찾을수 없을 경우 에 실행
+            System.out.printf("%d번 명언을 찾을수없습니다.%n",id);
+            return;
+        }
+        Inventory inventory = inventoryList.get(index);
+        System.out.printf("명언 (기존): %s %n", inventory.wiseSaying);
+        System.out.printf("명언 : ");
+        String wiseSaying = scanner.nextLine();
+
+        System.out.printf("작가 (기존): %s %n", inventory.author);
+        System.out.print("작가 :");
+        String author = scanner.nextLine();
+
+        inventory.wiseSaying = wiseSaying;
+        inventory.author = author;
+
+        System.out.printf("%d번 명언이 수정 되었습니다.%n",id);
         }
 
-        int getParamAsInt (String sc , String findParamName , int defultValue){
 
-            String[] scBit = sc.split("\\?", 2); // ? 기준 으로 양 옆으로 나눈다 .삭제?id=2 를 입력 하면 "삭제" , "2" 로 나눈다.
-           // String scAction = scBit[0];
-            String queryString = scBit[1]; // "id=2" 저장
-            String[] queryStringBit = queryString.split("&"); //["id=2"]
-            for (int i = 0; i < queryStringBit.length; i++) {  // queyStringBit 길이만큼 순회
-                String queryStringStr = queryStringBit[i]; // "id = 2"
-                String[] queryStringParam = queryStringStr.split("=", 2); //  "id" , "2"
-                String ParamName = queryStringParam[0]; // "id" 저장
-                String ParamValue = queryStringParam[1]; // "2" 저장
-
-                try {
-                if (ParamName.equals(findParamName))  // "id" 문자열이 일치한다고하면 실행
-                    return Integer.parseInt(ParamValue);
-                }
-                catch (NumberFormatException e){ //정수 값이 아닌 문자열 값 입력 시 예외
-                    return defultValue;
-                }
-            }
-                return defultValue;
-        }
 }
