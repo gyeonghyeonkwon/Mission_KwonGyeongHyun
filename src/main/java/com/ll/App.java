@@ -11,10 +11,7 @@ public class App {
     public void run() {
         System.out.println("==명언앱==");
 
-
-
         while (true) {
-
             System.out.print("명령 :");
             String sc = scanner.nextLine();
 
@@ -23,8 +20,7 @@ public class App {
             switch (rq.getAction()) { //rq scAction 으로 부터 반환 받은 문자열 으로 해당 문자열 을 찾음
 
                 case "종료" :
-
-                    System.out.println("프로그램을 종료합니다.");
+                    System.out.println("프로그램 종료.");
                     return;
                 case "등록" :
                     register();
@@ -68,7 +64,7 @@ public class App {
             Inventory inventory = inventoryList.get(i); // 리스트에 저장되어있는 값을 꺼내어 클래스의 객체에저장
             System.out.printf("%d %s %s %n", inventory.id, inventory.author, inventory.wiseSaying);
         }
-        if (inventoryList.isEmpty()){ //목록이 비어 있을경우 inventory id 를 초기화 한다
+        if (inventoryList.isEmpty()){ //목록이 비어 있을 경우 inventory id 를 0 으로 초기화 한다
             wiseSayingNumber = 0;
             System.out.println("목록이 비어 있습니다.");
         }
@@ -131,11 +127,14 @@ public class App {
         System.out.print("작가 :");
         String author = scanner.nextLine();
 
-        inventory.wiseSaying = wiseSaying;
-        inventory.author = author;
+        inventory.wiseSaying = wiseSaying; // 입력된 명언 저장
+        inventory.author = author; //입력된 작가저장
 
         System.out.printf("%d번 명언이 수정 되었습니다.%n",id);
         }
 
+        void listCall (){
+            wiseSayingNumber++;
+        }
 
 }
