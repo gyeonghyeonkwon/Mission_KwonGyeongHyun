@@ -21,6 +21,7 @@ public class Rq {
        scAction = scBit[0]; // "sc에 입력한 첫번째 문자열 저장"
 
         if (scBit.length == 1 ) {  //sc에 입력한 문자열 배열이 1개이면  호출 된 곳으로 반환
+
                 return;
         }
 

@@ -20,7 +20,7 @@ public class App {
 
             Rq rq = new Rq(sc);
 
-            switch (rq.getAction()) { //rq 로 부터 반환 받은 문자열 으로 해당 문자열 을 찾음
+            switch (rq.getAction()) { //rq scAction 으로 부터 반환 받은 문자열 으로 해당 문자열 을 찾음
 
                 case "종료" :
 
@@ -68,6 +68,10 @@ public class App {
             Inventory inventory = inventoryList.get(i); // 리스트에 저장되어있는 값을 꺼내어 클래스의 객체에저장
             System.out.printf("%d %s %s %n", inventory.id, inventory.author, inventory.wiseSaying);
         }
+        if (inventoryList.isEmpty()){ //목록이 비어 있을경우 inventory id 를 초기화 한다
+            wiseSayingNumber = 0;
+            System.out.println("목록이 비어 있습니다.");
+        }
 
     }
 
@@ -75,7 +79,7 @@ public class App {
 
         int id= rq.getParamAsInt ("id" ,0); //입력된 "id" 문자열 이 나 값이 오입력 이면 0을 반환.
 
-        if (id ==0) { // id 값이 0 이면 실행
+        if (id == 0) { // id 값이 0 이면 실행
             System.out.println("삭제할 id 를 찾을 수 없습니다.");
             return; //함수를 끝낸다.
         }
@@ -86,8 +90,9 @@ public class App {
             return;
         }
 
+        inventoryList.remove(index); //명언을 삭제 한다.
 
-        inventoryList.remove(index); //명언을 삭제한다.
+
 
         System.out.printf("%d번 명언을 삭제 합니다.%n",id);
     }
