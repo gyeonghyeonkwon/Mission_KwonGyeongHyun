@@ -133,8 +133,4 @@ public class App {
         System.out.printf("%d번 명언이 수정 되었습니다.%n",id);
         }
 
-        void listCall (){
-            wiseSayingNumber++;
-        }
-
 }
